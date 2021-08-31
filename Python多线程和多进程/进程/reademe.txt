@@ -1,0 +1,109 @@
+进程：正在执行的程序可以看作是进程
+线程：线程是进程的执行单元
+进程与线程的对比：
+    进程是重量级的。具体包括进程映像结构的结构，执行细节以及进程间切换的方法，在进程中，需要处理的问题
+    包括进程间通信，临界区管理和进程调度等，这些特性使得进程开销比较大
+    线程是轻量级的。线程之间有许多共享的资源，容易通信，生成一个线程的开销较小
+    但是线程会有死锁，数据同步和实现复杂等问题
+
+并发编程解决方案：
+    ① 启动多个进程，每个进程虽然只有一个线程，但多个进程可以一起执行多个任务
+    ② 启动一个进程，在一个进程中启动多个线程，多个线程也可以一起执行多个任务
+    ③ 启动多个进程，每个进程启动多个线程，这样同时执行的任务就更多，这种模型复杂，实际很少采用
+由于Python使用全局解释锁(GIL)和队列模块，其在线程实现的复杂度上相对于其他语言来说要低很多，由于GIL的存在,
+所以Python解释器不是线程安全的，因为当前线程必须持有这个全局解释锁，才可以安全访问Python对象,虽然使用GIL
+使得Python不能很好的利用多GPU优势，但是现在还没有很好的办法来代替它，因为去掉GIL会带来很多麻烦
+
+针对I/O受限:
+    如网络下载类，可以使用多线程
+对于GPU受限:
+    如科学计算类，使用多线程不会提高效率，建议使用进程和进程与线程混合的方法实现
+
+相关模块：
+    os/sys  包含基本进程管理函数
+    subprocess python基本库中多进程编程相关模块，适用于与外部进程进程交互，调用外部进程
+    multiprocessing python基本库中进程编程模块，核心机制是fork,重开一个进程，首先会把父进程的代码copy重载一遍
+    threading python基本库中多线程管理相关模块
+
+    subprocess 模块首先推荐使用的是它的 run 方法，更高级的用法可以直接使用 Popen 接口
+    run()方法语法格式如下：
+    subprocess.run(args, *, stdin=None, input=None, stdout=None, stderr=None,
+    capture_output=False, shell=False, cwd=None, timeout=None, check=False,
+    encoding=None, errors=None, text=None, env=None, universal_newlines=None)
+    参数列表：
+        args：表示要执行的命令。必须是一个字符串，字符串参数列表。
+        stdin、stdout 和 stderr：子进程的标准输入、输出和错误。
+            其值可以是 subprocess.PIPE、subprocess.DEVNULL、一个已经存在的文件描述符、已经打开的文件对象或者None
+            subprocess.PIPE 表示为子进程创建新的管道 父进程和子进程之间通信
+            subprocess.DEVNULL 表示使用 os.devnull。默认使用的是 None，表示什么都不做。将数据丢失
+            另外，stderr 可以合并到 stdout 里一起输出。stderr=subprocess.STDOUT
+        timeout：设置命令超时时间。如果命令执行时间超时，子进程将被杀死，并弹出 TimeoutExpired 异常。
+        check：如果该参数设置为 True，并且进程退出状态码不是 0，则弹 出 CalledProcessError 异常。
+        encoding: 如果指定了该参数，则 stdin、stdout 和 stderr 可以接收字符串数据，并以该编码方式编码。
+        否则只接收 bytes 类型的数据。
+        shell：如果该参数为 True，将通过操作系统的 shell 执行指定的命令。
+
+    Popen接口传给系统命令
+    Popen 是 subprocess的核心，子进程的创建和管理都靠它处理
+    class subprocess.Popen(args, bufsize=-1, executable=None, stdin=None, stdout=None, stderr=None,
+        preexec_fn=None, close_fds=True, shell=False, cwd=None, env=None, universal_newlines=False,
+        startupinfo=None, creationflags=0,restore_signals=True, start_new_session=False, pass_fds=(),
+        *, encoding=None, errors=None)
+    常用参数:
+        args：shell命令，可以是字符串或者序列类型（如：list，元组）
+
+        bufsize：缓冲区大小。当创建标准流的管道对象时使用，默认-1。
+            0：不使用缓冲区
+            1：表示行缓冲，仅当universal_newlines=True时可用，也就是文本模式
+            正数：表示缓冲区大小
+            负数：表示使用系统默认的缓冲区大小。
+        stdin, stdout, stderr：分别表示程序的标准输入、输出、错误句柄
+        preexec_fn：只在 Unix 平台下有效，用于指定一个可执行对象（callable object），它将在子进程运行之前被调用
+        shell：如果该参数为 True，将通过操作系统的 shell 执行指定的命令。
+        cwd：用于设置子进程的当前目录。
+        env：用于指定子进程的环境变量。如果 env = None，子进程的环境变量将从父进程中继承。
+
+multiprocessing模块
+    进程ID: os.getpid()
+    父进程ID：os.getppid()
+
+进程创建的方式：
+    ① 直接创建
+    ② 自定义类创建，重写run()方法
+
+进程间的通信：
+    进程和进程之间无法共享全局变量
+    Python提供了多种实现进程间通信的机制，主要有以下2种：
+        ① Python multiprocessing模块下的Queue类，提供了多个进程之间实现通信的诸多方法
+        ② Pipe ，又称为管道，常用于实现2个进程间的通信，这2个进程分别位于管道的两端
+    Queue实现进程之间的通信
+        简单的理解，Queue实现进程间的通信，使用了操作系统给开辟的一个队列空间，各个进程可以把数据放到该
+        队列中，当然也可以从队列中将自己需要的数据取走
+    Pipe实现进程间的通信
+        Pipe有两个口，Pipe用来实现2个进程之间的通信，这个2个进程分别位于管道的两端，一端用来发数据，一端用来接收数据
+        1.send(obj)
+	        发送一个obj给管道的另一端，另一端使用recv()方法接收,，该obj必须是可序列化的，如果可序列化的数据超过32MB，可能会引发ValueError异常
+
+        2.recv()
+	        接收另一端通过send()方法发送过来的数据
+
+        3.close()
+	        关闭连接
+
+        4.poll(timeout)
+	        返回连接中是否还有数据可以读取
+
+进程池：
+    Python提供了更好的管理多个进程的方式，使用进程池。进程池可以提供指定数量的进程给用户使用。
+    即当有了新的请求提交到进程池中，如果未满，则会创建一个新的进程用来执行该请求；
+    反之，如果进程池中的进程数已经达到最大，那么该请求就会等待，只有进程池空闲下来，该请求才会执行。
+    使用进程池的优点:
+        1.提高效率，节省开辟进程和开辟内存空间的时间以及销毁进程的时间
+        2.节省内存空间
+
+    Pool()中的函数说明
+        Pool() 创建多个进程，表示可以同时执行的进程数量，默认大小是CPU的核心数量
+        join() 会等待进程池中所有的子进程结束后再去执行父进程
+        close() 如果使用的进程池 在调用join()之前必须先close，在close之后不能继续向进程池中添加新的进程
+        pool.apply_async(func,args,kwargs) 异步执行 将事件放入进程池队列。args以元组方式传参，kwargs以字典格式
+        pool.apply_sync(func, args, kwargs) 同步执行 将事件放入进程池队列

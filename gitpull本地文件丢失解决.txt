@@ -1,0 +1,5 @@
+git reflog
+会看到几个版本号和名字
+cb81878 HEAD@{3}: commit (initial): first commit
+git reset --hard 名字
+git reset --hard HEAD@{3}
