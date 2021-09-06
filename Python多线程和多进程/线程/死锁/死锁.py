@@ -28,6 +28,7 @@ class MyThread2(Thread):
         lock2.release()
         lock1.release()
 
+
 class MyThread3(Thread):
     def run(self):
         lock3.acquire()
@@ -36,10 +37,12 @@ class MyThread3(Thread):
         self.run()
         lock3.release()
 
+
 if __name__ == '__main__':
-    # t1 = MyThread1()
-    # t2 = MyThread2()
-    # t1.start()
-    # t2.start()
-    t3 = MyThread3()
-    t3.start()
+    t1 = MyThread1()
+    t2 = MyThread2()
+    t1.start()
+    t2.start()
+    # t3 = MyThread3()
+    # t3.start()
+

@@ -17,11 +17,10 @@ while True:
     # print(data)
     # 需要对接收到的数据进行解码
     data_ = data[0].decode("utf-8")
-    print(data[1],"发送的消息是：", data_)
+    print(data[1], "发送的消息是：", data_)
 
     # 将收到的信息返回给客户端
     socet_server.sendto(data[0], data[1])
-
 
 # 关闭套接字  释放资源
 socet_server.close()

@@ -2,12 +2,14 @@ import time
 import os
 from multiprocessing import Process
 
+
 def test(name):
     print('当前进程的id', os.getpid())
     print('当前父进程的id', os.getppid())
     print('当前进程的名字', name)
 
     time.sleep(3)
+
 
 if __name__ == '__main__':
     for i in range(10):

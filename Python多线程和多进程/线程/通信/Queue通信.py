@@ -15,7 +15,7 @@ class Producter(threading.Thread):
         global q
         count = 0
         while True:
-            # q.size() 获取队列中的数据的总数
+            # q.qsize() 获取队列中的数据的总数
             if q.qsize() < 1000:
                 for i in range(100):
                     count += 1
@@ -28,12 +28,13 @@ class Producter(threading.Thread):
 
 class Customer(threading.Thread):
     def run(self):
-       global q
-       while True:
-           for i in range(100):
-               msg = q.get()
-               print(f'消费{msg}')
-           time.sleep(3)
+        global q
+        while True:
+            for i in range(100):
+                msg = q.get()
+                print(f'消费{msg}')
+            time.sleep(3)
+
 
 if __name__ == '__main__':
     t1 = Producter()

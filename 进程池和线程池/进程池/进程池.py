@@ -7,6 +7,7 @@ import psutil  # 获取系统进程信息
 import os
 from concurrent.futures import ProcessPoolExecutor  # 进程池
 
+
 def task(max_num):
     """
     定义一个进程任务
@@ -28,7 +29,6 @@ if __name__ == '__main__':
 
     pool.close()
     pool.join()
-
 
 if __name__ == '__main__':
     with ProcessPoolExecutor(max_workers=4) as pool:

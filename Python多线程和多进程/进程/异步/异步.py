@@ -25,6 +25,7 @@ def test3(args):
     print(f'参数是{args}')
     print('早餐吃完')
 
+
 if __name__ == '__main__':
     po = Pool(4)
     # 异步
