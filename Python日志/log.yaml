@@ -1,0 +1,36 @@
+version: 1
+disable_existing_loggers: False
+formatters:
+  simple:
+    format: "%(asctime)s -- %(levelname)s -- %(name)s -- %(message)s"
+  verbose:
+    format: "%(asctime)s -- %(levelname)s -- %(name)s -- %(message)s -- %(thread)d -- %(process)d"
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: INFO
+    formatter: simple
+  info_file_handler:
+    class: logging.handlers.RotatingFileHandler
+    level: INFO
+    formatter: verbose
+    maxBytes: 3072
+    filename: infoym.log
+    backupCount: 3
+    encoding: utf8
+  error_file_handler:
+    class: logging.handlers.RotatingFileHandler
+    level: ERROR
+    formatter: verbose
+    maxBytes: 3072
+    filename: errory.log
+    backupCount: 3
+    encoding: utf8
+loggers:
+  mylogger:
+    level: INFO
+    handlers: [ info_file_handler, console ]
+    propagate: True
+root:
+  levle: INFO
+  handlers: [ info_file_handler, console,error_file_handler ]

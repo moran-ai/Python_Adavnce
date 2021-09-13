@@ -1,0 +1,43 @@
+2021-09-12 10:49:45,214 -- INFO -- __main__ -- start
+2021-09-12 10:49:45,228 -- WARNING -- __main__ -- something
+2021-09-12 10:49:45,229 -- ERROR -- __main__ -- Faild to open test.txt from logger.error
+Traceback (most recent call last):
+  File "E:/virenv/python全栈/Python日志/捕获异常.py", line 42, in <module>
+    open('test.txt', 'r')
+FileNotFoundError: [Errno 2] No such file or directory: 'test.txt'
+2021-09-12 10:49:45,239 -- INFO -- __main__ -- finish
+2021-09-12 10:50:04,439 -- INFO -- __main__ -- start
+2021-09-12 10:50:04,452 -- WARNING -- __main__ -- something
+2021-09-12 10:50:04,453 -- ERROR -- __main__ -- Faild to open test.txt from logger.error
+2021-09-12 10:50:04,453 -- INFO -- __main__ -- finish
+2021-09-12 10:52:03,334 -- INFO -- __main__ -- start
+2021-09-12 10:52:03,335 -- WARNING -- __main__ -- something
+2021-09-12 10:52:03,337 -- ERROR -- __main__ -- Faild to open test.txt from logger.error
+2021-09-12 10:52:03,337 -- INFO -- __main__ -- finish
+2021-09-12 10:52:09,791 -- INFO -- __main__ -- start
+2021-09-12 10:52:09,791 -- WARNING -- __main__ -- something
+2021-09-12 10:52:09,792 -- ERROR -- __main__ -- Faild to open test.txt from logger.error
+Traceback (most recent call last):
+  File "E:/virenv/python全栈/Python日志/捕获异常.py", line 42, in <module>
+    open('test.txt', 'r')
+FileNotFoundError: [Errno 2] No such file or directory: 'test.txt'
+2021-09-12 10:52:09,792 -- INFO -- __main__ -- finish
+2021-09-12 10:57:24,100 -- INFO -- __main__ -- start
+2021-09-12 10:57:24,101 -- WARNING -- __main__ -- something
+2021-09-12 10:57:24,102 -- ERROR -- __main__ -- Faild to open test.txt from logger.exception
+Traceback (most recent call last):
+  File "E:/virenv/python全栈/Python日志/捕获异常.py", line 42, in <module>
+    open('test.txt', 'r')
+FileNotFoundError: [Errno 2] No such file or directory: 'test.txt'
+2021-09-12 10:57:24,103 -- INFO -- __main__ -- finish
+2021-09-12 10:57:34,428 -- INFO -- __main__ -- start
+2021-09-12 10:57:34,428 -- WARNING -- __main__ -- something
+2021-09-12 10:57:34,430 -- ERROR -- __main__ -- Faild to open test.txt from logger.exception
+Traceback (most recent call last):
+  File "E:/virenv/python全栈/Python日志/捕获异常.py", line 42, in <module>
+    open('test.txt', 'r')
+FileNotFoundError: [Errno 2] No such file or directory: 'test.txt'
+Stack (most recent call last):
+  File "E:/virenv/python全栈/Python日志/捕获异常.py", line 47, in <module>
+    logger.exception('Faild to open test.txt from logger.exception', stack_info=True)
+2021-09-12 10:57:34,431 -- INFO -- __main__ -- finish
